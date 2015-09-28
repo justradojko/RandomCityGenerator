@@ -5,7 +5,6 @@ Generator of N random cities from the cities.txt file in the following format:
 For N = 15 output is:
 
   14:18 "Canoga Park"
-  
   23:23 "Gainesville"
   
   19:55 "Chuathbaluk"
