@@ -16,7 +16,8 @@ public class RandomCities {
 	
 	
 	private void loadDataFromFile(){
-		try(FileReader fr = new FileReader(new File("cities.txt"))){
+		try{
+			FileReader fr = new FileReader(new File("cities.txt"));
 			BufferedReader br = new BufferedReader(fr);
 			for (int i = 0; i < NUMBER_OF_CITIES; i++) {
 				cityList.add(br.readLine());
@@ -59,19 +60,23 @@ public class RandomCities {
 	
 	public void go(int input){
 		n = input;
-		this.loadDataFromFile();
-		this.makeRandomValidList();
-		this.printRandomList();
+		if ( (n >= 5) && (n <= 1000 )){
+			this.loadDataFromFile();
+			this.makeRandomValidList();
+			this.printRandomList();
+		} else {
+			System.out.format("Invalid value of N = %d \n", input);
+		}
 	}
 	
 	
 	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("Desired number of cities: ");
-		int n = scanner.nextInt();
-		scanner.close();
+//		Scanner scanner = new Scanner(System.in);
+//		System.out.print("Desired number of cities: ");
+//		int n = scanner.nextInt();
+//		scanner.close();
 		
 		RandomCities cities = new RandomCities();
-		cities.go(n);		
+		cities.go(Integer.parseInt(args[0]));		
 	}
 }
