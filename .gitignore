@@ -1,2 +1,6 @@
 *.class
+*.MF
+.metadata/
+.settings/
+META-INF/
 bin/
