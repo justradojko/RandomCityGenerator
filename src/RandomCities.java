@@ -3,24 +3,22 @@ import java.io.File;
 import java.io.FileReader;
 import java.sql.Time;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Random;
 import java.util.Scanner;
 
-public class RandomCities {
+public class RandomCities{
 	private ArrayList<String> cityList = new ArrayList<String>();
 	private ArrayList<String> randomList = new ArrayList<String>();
-	private static final int NUMBER_OF_CITIES= 1500;
 	private int n;
 	
 	
 	private void loadDataFromFile(){
-		try{
-			FileReader fr = new FileReader(new File("cities.txt"));
+		try (FileReader fr = new FileReader(new File("cities.txt"))){
+			String str;
 			BufferedReader br = new BufferedReader(fr);
-			for (int i = 0; i < NUMBER_OF_CITIES; i++) {
-				cityList.add(br.readLine());
+			while( (str = br.readLine()) != null  && str.length() > 0 ){
+				cityList.add(str);
 			}
 			Collections.shuffle(cityList);
 		} catch (Exception e){
@@ -36,26 +34,31 @@ public class RandomCities {
 	
 	
 	private void makeRandomValidList(){
-		int startingPoint;
-		startingPoint = (int) (Math.random() * NUMBER_OF_CITIES);
-		if (startingPoint + n > NUMBER_OF_CITIES) {
-			startingPoint -= (startingPoint + n - NUMBER_OF_CITIES);
-		} 
 		
-		for (int i = 0; i < n; i++) {
-			randomList.add(this.getRandomTime() + " \"" +cityList.get( startingPoint + i) + "\"");
+		//TRYING TO GRAB PART OF COMPLETE LIST SOMEWHERE FROM THE MIDDLE.
+		int startingPoint;
+		startingPoint = (int) (Math.random() * cityList.size());
+		if (startingPoint + n > cityList.size()) {
+			startingPoint = cityList.size() - n - 1;
+		}
+		
+		randomList = new ArrayList<String>(cityList.subList(startingPoint, startingPoint + n));
+		
+		for (int i = 0; i < randomList.size() - (int)Math.ceil(n/5.0); i++) {
+			randomList.set(i, this.getRandomTime() + " \"" +randomList.get(i) + "\"");
 					
-			if (i <= n/5){
-				randomList.add(this.getRandomTime() + " \"" +cityList.get(startingPoint + i) + "\"");
+			//ASSURING THAT RANDOMLIST CONTAINS AT LEAST N/5 DULICATES
+			if (i < (int)Math.ceil(n/5.0) ){
+				randomList.set(randomList.size() - i-1, randomList.get(i));
 			}		
 		}
 		Collections.shuffle(randomList);
 	}
 	
 	private void printRandomList(){
-		for (int i = 0; i < n; i++) {
-			System.out.println(randomList.get(i));
-		}		
+		for (String element : randomList) {
+			System.out.println(element);
+		}
 	}
 	
 	public void go(int input){
@@ -71,12 +74,13 @@ public class RandomCities {
 	
 	
 	public static void main(String[] args) {
-//		Scanner scanner = new Scanner(System.in);
-//		System.out.print("Desired number of cities: ");
-//		int n = scanner.nextInt();
-//		scanner.close();
+		Scanner scanner = new Scanner(System.in);
+		System.out.print("Desired number of cities: ");
+		int n = scanner.nextInt();
+		scanner.close();
 		
 		RandomCities cities = new RandomCities();
-		cities.go(Integer.parseInt(args[0]));		
+//		cities.go(Integer.parseInt(args[0]));
+		cities.go(n);
 	}
 }
