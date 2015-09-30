@@ -74,13 +74,13 @@ public class RandomCities{
 	
 	
 	public static void main(String[] args) {
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("Desired number of cities: ");
-		int n = scanner.nextInt();
-		scanner.close();
+//		Scanner scanner = new Scanner(System.in);
+//		System.out.print("Desired number of cities: ");
+//		int n = scanner.nextInt();
+//		scanner.close();
 		
 		RandomCities cities = new RandomCities();
-//		cities.go(Integer.parseInt(args[0]));
-		cities.go(n);
+		cities.go(Integer.parseInt(args[0]));
+//		cities.go(n);
 	}
 }
